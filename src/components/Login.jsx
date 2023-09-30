@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 
 const Login = () => {
-  const { signInUser } = useContext(AuthContext);
+  const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -14,11 +15,23 @@ const Login = () => {
     signInUser(email, password)
       .then((res) => {
         console.log(res.user);
+        e.target.reset();
+        navigate('/')
       })
       .catch((error) => {
         console.log(error);
       });
-  };
+
+    };
+    const handleGoogleSignIn = () =>{
+      signInWithGoogle()
+      .then(res =>{
+          console.log(res.user)
+      })
+      .catch(error =>{
+          confirm.log(error)
+      })
+    }
   return (
     <div>
       <div className="hero min-h-screen bg-base-200">
@@ -74,6 +87,7 @@ const Login = () => {
                   </Link>
                 </span>
               </div>
+              <button onClick={handleGoogleSignIn} className="btn btn-ghost">Google</button>
             </div>
           </div>
         </div>
